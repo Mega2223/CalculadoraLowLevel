@@ -2,6 +2,7 @@
 #include <stdio.h>
 
 void matrixSum(int bScale);
+void scalarProduct();
 int** inputMatrix(int width, int height);
 void printMatrix(int** matrix, int height, int width);
 
@@ -10,7 +11,7 @@ void printMatrix(int** matrix, int height, int width);
 int main(){
     int nextOperation = 10;
 
-    while (nextOperation > 0){
+    while (nextOperation != 0){
         printf(
             "Insira o numero da operacao\n"
             "1 - Adicao\n"
@@ -30,8 +31,11 @@ int main(){
         case 2:
             matrixSum(-1);
             break;
+        case 3:
+            scalarProduct();
+            break;
         default:
-            printf("Operacao %d e invalida, tente de novo\n",nextOperation);
+            printf("Operacao %d nao existe, tente de novo\n",nextOperation);
             break;
         }
     }
@@ -57,7 +61,7 @@ void matrixSum(int bSignal){
     C = malloc(height * sizeof(int*));
     for(int y = 0; y < height; ++y){
         C[y] = malloc(width * sizeof(int));
-        for(int x = 0; x < height; ++x){
+        for(int x = 0; x < width; ++x){
             C[y][x] = A[y][x] + B[y][x] * bSignal;
         }
     }
@@ -66,6 +70,40 @@ void matrixSum(int bSignal){
     printMatrix(C, height, width);
     printf("\n");
 
+    // nao podemos gerar vazamento de memoria hehehe
+    for(int y = 0; y < height; ++y){
+        free(A[y]); free(B[y]); free(C[y]);
+    }
+    free(A); free(B); free(C);
+    return;
+}
+
+void scalarProduct(){
+    int height, width, scalar, **matrix, **result;
+
+    printf("Insira o escalar que vai multiplicar a matriz:\n"); scanf("%d",&scalar);
+    printf("Insira o numero de linhas da matriz:\n"); scanf("%d",&height);
+    printf("Insira o numero de colunas da matriz:\n"); scanf("%d",&width);
+    
+    printf("\n--- Insira a matriz ---\n");
+    matrix = inputMatrix(height,width);
+
+    result = malloc(height * sizeof(int*));
+    for(int y = 0; y < height; ++y){
+        result[y] = malloc(width * sizeof(int));
+        for(int x = 0; x < width; ++x){
+            result[y][x] = matrix[y][x] * scalar;
+        }
+    }
+
+    printf("RESULTADO:\n");
+    printMatrix(result, height, width);
+    printf("\n");
+
+    for(int y = 0; y < height; ++y){
+        free(matrix[y]); free(result[y]);
+    }
+    free(matrix); free(result);
     return;
 }
 
@@ -75,7 +113,7 @@ int** inputMatrix(int height, int width){
     int** matrix = malloc(height * sizeof(int*));
     for(int y = 0; y < height; ++y){
         matrix[y] = malloc(width * sizeof(int));
-        for(int x = 0; x < height; ++x){
+        for(int x = 0; x < width; ++x){
             printf("\nInsira o valor na linha %d coluna %d\n",y+1,x+1);
             scanf("%d",&matrix[y][x]);
         }
@@ -86,7 +124,7 @@ int** inputMatrix(int height, int width){
 void printMatrix(int** matrix, int height, int width){
     for(int y = 0; y < height; ++y){
         printf("[");
-        for(int x = 0; x < height; ++x){
+        for(int x = 0; x < width; ++x){
             printf(" %d",matrix[y][x]);
         }
         printf(" ]\n");
