@@ -123,7 +123,7 @@ void matrixProduct(){
     printf("Insira o numero de colunas da matriz B:\n"); scanf("%d",&widthB);
     
     if(widthA != heightB){
-        printf("Essas matrizes não se multiplicam (largura de A é diferente da altura de B)\n");
+        printf("Essas matrizes nao se multiplicam (largura de A eh diferente da altura de B)\n");
         return;
     }
 
