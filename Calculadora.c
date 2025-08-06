@@ -3,6 +3,7 @@
 
 void matrixSum(int bScale);
 void scalarProduct();
+void matrixProduct();
 int** inputMatrix(int width, int height);
 void printMatrix(int** matrix, int height, int width);
 
@@ -33,6 +34,9 @@ int main(){
             break;
         case 3:
             scalarProduct();
+            break;
+        case 4:
+            matrixProduct();
             break;
         default:
             printf("Operacao %d nao existe, tente de novo\n",nextOperation);
@@ -104,6 +108,54 @@ void scalarProduct(){
         free(matrix[y]); free(result[y]);
     }
     free(matrix); free(result);
+    return;
+}
+
+
+void matrixProduct(){
+    // A x B = C
+    int heightA, widthA, heightB, widthB;
+    int **A, **B, **C;
+    
+    printf("Insira o numero de linhas da matriz A:\n"); scanf("%d",&heightA);
+    printf("Insira o numero de colunas da matriz A:\n"); scanf("%d",&widthA);
+    printf("Insira o numero de linhas da matriz B:\n"); scanf("%d",&heightB);
+    printf("Insira o numero de colunas da matriz B:\n"); scanf("%d",&widthB);
+    
+    if(widthA != heightB){
+        printf("Essas matrizes não se multiplicam (largura de A é diferente da altura de B)\n");
+        return;
+    }
+
+    printf("\n--- Input para a matriz A ---\n");
+    A = inputMatrix(heightA,widthA);
+    printf("\n--- Input para a matriz B ---\n");
+    B = inputMatrix(heightB,widthB);
+
+    C = malloc(heightA * sizeof(int*));
+    for(int y = 0; y < heightB; ++y){
+        C[y] = malloc(widthB * sizeof(int));
+        for(int x = 0; x < widthB; ++x){
+            C[y][x] = 0;
+            for (int i = 0; i < widthA; i++) {
+                C[y][x] += A[y][i] * B[i][x];
+            }
+        }
+    }
+
+    printf("A:\n");
+    printMatrix(A, heightA, widthA);
+    printf("\nB:\n");
+    printMatrix(B, heightB, widthB);
+
+    printf("\nA x B:\n");
+    printMatrix(C, heightA, widthB);
+    printf("\n");
+
+    for(int y = 0; y < heightA; ++y){ free(A[y]); }
+    for(int y = 0; y < heightB; ++y){ free(C[y]); free(B[y]); }
+
+    free(A); free(B); free(C);
     return;
 }
 
