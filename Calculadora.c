@@ -4,7 +4,9 @@
 void matrixSum(int bScale);
 void scalarProduct();
 void matrixProduct();
+void transpose();
 int** inputMatrix(int width, int height);
+int** getTranspose(int** matrix, int height, int width);
 void printMatrix(int** matrix, int height, int width);
 
 // linha / height primeiro
@@ -18,8 +20,9 @@ int main(){
             "1 - Adicao\n"
             "2 - Subtracao\n"
             "3 - Multiplicacao escalar\n"
-            "4 - Multiplicacao matricial\n\n"
-            "0 - Sair\n"
+            "4 - Multiplicacao matricial\n"
+            "5 - Transposicao\n"
+            "\n0 - Sair\n"
         );
 
         scanf("%d",&nextOperation);
@@ -37,6 +40,9 @@ int main(){
             break;
         case 4:
             matrixProduct();
+            break;
+        case 5:
+            transpose();
             break;
         default:
             printf("Operacao %d nao existe, tente de novo\n",nextOperation);
@@ -75,7 +81,7 @@ void matrixSum(int bSignal){
     printf("\nB:\n");
     printMatrix(B, height, width);
 
-    printf("RESULTADO:\n");
+    printf("\nRESULTADO:\n");
     printMatrix(C, height, width);
     printf("\n");
 
@@ -108,7 +114,7 @@ void scalarProduct(){
     printf("A:\n");
     printMatrix(matrix, height, width);
 
-    printf("RESULTADO:\n");
+    printf("\nRESULTADO:\n");
     printMatrix(result, height, width);
     printf("\n");
 
@@ -167,6 +173,22 @@ void matrixProduct(){
     return;
 }
 
+void transpose(){
+    int height, width, **matrix, **result;
+
+    printf("Insira o numero de linhas da matriz:\n"); scanf("%d",&height);
+    printf("Insira o numero de colunas da matriz:\n"); scanf("%d",&width);
+
+    printf("\n--- Input ---\n");
+    matrix = inputMatrix(height,width);
+    printf("Input:\n");
+    printMatrix(matrix, height, width);
+
+    result = getTranspose(matrix,height,width);
+    printf("\nTRANSPOSE:\n");
+    printMatrix(result, width, height);
+}
+
 // como varias funcoes pedem pra colocar a matriz
 // isso deixa o codigo um pouco menos verbose
 int** inputMatrix(int height, int width){
@@ -180,6 +202,24 @@ int** inputMatrix(int height, int width){
     }
     return matrix;
 }
+
+int** getTranspose(int** matrix, int height, int width){
+    int** transposed;
+    transposed = malloc(width * sizeof(int*));
+    
+    for(int x = 0; x < width; ++x){
+        transposed[x] = malloc(width * sizeof(int));
+        for(int y = 0; y < height; ++y){
+            transposed[x][y] = matrix[y][x];
+        }
+    }
+
+    return transposed;
+}
+
+/*int equals(){
+
+}*/
 
 void printMatrix(int** matrix, int height, int width){
     for(int y = 0; y < height; ++y){
