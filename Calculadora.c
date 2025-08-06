@@ -69,6 +69,11 @@ void matrixSum(int bSignal){
             C[y][x] = A[y][x] + B[y][x] * bSignal;
         }
     }
+    
+    printf("A:\n");
+    printMatrix(A, height, width);
+    printf("\nB:\n");
+    printMatrix(B, height, width);
 
     printf("RESULTADO:\n");
     printMatrix(C, height, width);
@@ -99,6 +104,9 @@ void scalarProduct(){
             result[y][x] = matrix[y][x] * scalar;
         }
     }
+    
+    printf("A:\n");
+    printMatrix(matrix, height, width);
 
     printf("RESULTADO:\n");
     printMatrix(result, height, width);
