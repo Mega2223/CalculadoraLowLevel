@@ -5,6 +5,8 @@ void matrixSum(int bScale);
 void scalarProduct();
 void matrixProduct();
 void transpose();
+void isSquare();
+void isSymetric();
 int** inputMatrix(int width, int height);
 int** getTranspose(int** matrix, int height, int width);
 void printMatrix(int** matrix, int height, int width);
@@ -22,6 +24,8 @@ int main(){
             "3 - Multiplicacao escalar\n"
             "4 - Multiplicacao matricial\n"
             "5 - Transposicao\n"
+            "6 - Verificar se eh quadrada\n"
+            "7 - Verificar se eh simetrica\n"
             "\n0 - Sair\n"
         );
 
@@ -43,6 +47,12 @@ int main(){
             break;
         case 5:
             transpose();
+            break;
+        case 6:
+            isSquare();
+            break;
+        case 7:
+            isSymetric();
             break;
         default:
             printf("Operacao %d nao existe, tente de novo\n",nextOperation);
@@ -187,6 +197,46 @@ void transpose(){
     result = getTranspose(matrix,height,width);
     printf("\nTRANSPOSE:\n");
     printMatrix(result, width, height);
+}
+
+void isSquare(){
+    int width, height;
+    // Eu acabei fazendo o codigo de tal modo que ele sempre pede a altura e largura antecipadamente.
+    printf("Insira o numero de linhas da matriz:\n"); scanf("%d",&height);
+    printf("Insira o numero de colunas da matriz:\n"); scanf("%d",&width);
+
+    if(height == width){
+        printf("\nEh quadrada\n");
+    } else {
+        printf("\nNao eh quadrada\n");
+    }       
+}
+
+void isSymetric(){
+    int width, height, **matrix, **transpose;
+
+    printf("Insira o numero de linhas da matriz:\n"); scanf("%d",&height);
+    printf("Insira o numero de colunas da matriz:\n"); scanf("%d",&width);
+
+    matrix = inputMatrix(height,width);
+
+    printf("Input:\n");
+    printMatrix(matrix, height, width);
+
+    if(height == width){
+        transpose = getTranspose(matrix, height, width);
+        for(int y = 0; y < height; ++y){
+            for(int x = 0; x < width; ++x){
+                if(transpose[y][x] != matrix[y][x]){
+                    printf("\nNao eh simetrica\n");
+                    return;
+                }
+            }
+        }
+        printf("\nEh simetrica\n");
+    } else {
+        printf("\nNao eh simetrica\n");
+    }       
 }
 
 // como varias funcoes pedem pra colocar a matriz
